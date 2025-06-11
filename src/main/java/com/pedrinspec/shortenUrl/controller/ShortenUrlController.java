@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.Map;
 
@@ -31,10 +30,9 @@ public class ShortenUrlController {
     }
 
     @GetMapping("/{shortCode}")
-    public RedirectView redirectView(@PathVariable String shortCode) {
-        return service.findByShortCode(shortCode)
-                .map(url -> new RedirectView(url.getOriginalUrl()))
-                .orElseGet(() -> new RedirectView("/not-found"));
+    public String redirectView(@PathVariable String shortCode) {
+        return service.findByShortCode(shortCode).map(ShortUrl::getOriginalUrl).orElseThrow(
+                () -> new IllegalArgumentException("Short code not found: " + shortCode));
     }
 
 }

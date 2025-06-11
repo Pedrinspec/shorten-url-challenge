@@ -31,6 +31,7 @@ public class ShortUrlService {
         shortUrl.setCreatedAt(LocalDateTime.now());
         shortUrl.setOriginalUrl(url);
         shortUrl.setShortCode(code);
+        shortUrl.setAccessCount(0L);
         return repository.save(shortUrl);
     }
 
